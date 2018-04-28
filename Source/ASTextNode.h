@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface ASTextNode : ASControlNode
 
+- (instancetype)init; // ASLayoutManager
+- (instancetype)initWithLayoutManagerClass:(Class)layoutManagerClass;
 /**
  @abstract The styled text displayed by the node.
  @discussion Defaults to nil, no text is shown.

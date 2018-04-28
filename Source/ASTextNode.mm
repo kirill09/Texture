@@ -34,6 +34,7 @@
 #import <AsyncDisplayKit/ASTextKitCoreTextAdditions.h>
 #import <AsyncDisplayKit/ASTextKitRenderer+Positioning.h>
 #import <AsyncDisplayKit/ASTextKitShadower.h>
+#import <AsyncDisplayKit/ASLayoutManager.h>
 
 #import <AsyncDisplayKit/ASInternalHelpers.h>
 #import <AsyncDisplayKit/ASLayout.h>
@@ -120,7 +121,7 @@ static NSCache *sharedRendererCache()
  we maintain a LRU renderer cache that is queried via a unique key based on text kit attributes and constrained size. 
  */
 
-static ASTextKitRenderer *rendererForAttributes(ASTextKitAttributes attributes, CGSize constrainedSize)
+static ASTextKitRenderer *rendererForAttributes(ASTextKitAttributes attributes, CGSize constrainedSize, Class layoutManagerClass)
 {
   NSCache *cache = sharedRendererCache();
   
@@ -130,7 +131,7 @@ static ASTextKitRenderer *rendererForAttributes(ASTextKitAttributes attributes, 
 
   ASTextKitRenderer *renderer = [cache objectForKey:key];
   if (renderer == nil) {
-    renderer = [[ASTextKitRenderer alloc] initWithTextKitAttributes:attributes constrainedSize:constrainedSize];
+    renderer = [[ASTextKitRenderer alloc] initWithTextKitAttributes:attributes constrainedSize:constrainedSize layoutManagerClass:layoutManagerClass];
     [cache setObject:renderer forKey:key];
   }
   
@@ -165,7 +166,7 @@ static ASTextKitRenderer *rendererForAttributes(ASTextKitAttributes attributes, 
 - (ASTextKitRenderer *)rendererForBounds:(CGRect)bounds
 {
   CGRect rect = UIEdgeInsetsInsetRect(bounds, _textContainerInsets);
-  return rendererForAttributes(_rendererAttributes, rect.size);
+  return rendererForAttributes(_rendererAttributes, rect.size, [ASLayoutManager class]);
 }
 
 @end
@@ -183,6 +184,8 @@ static ASTextKitRenderer *rendererForAttributes(ASTextKitAttributes attributes, 
   UIColor *_cachedShadowUIColor;
   CGFloat _shadowOpacity;
   CGFloat _shadowRadius;
+  
+  Class _layoutManagerClass;
   
   UIEdgeInsets _textContainerInset;
 
@@ -203,15 +206,18 @@ static ASTextKitRenderer *rendererForAttributes(ASTextKitAttributes attributes, 
 @dynamic placeholderEnabled;
 
 static NSArray *DefaultLinkAttributeNames = @[ NSLinkAttributeName ];
-
-- (instancetype)init
-{
+- (instancetype)init {
+    return [self initWithLayoutManagerClass:[ASLayoutManager class]];
+}
+- (instancetype)initWithLayoutManagerClass:(Class)layoutManagerClass {
   if (self = [super init]) {
     // Load default values from superclass.
     _shadowOffset = [super shadowOffset];
     _shadowColor = CGColorRetain([super shadowColor]);
     _shadowOpacity = [super shadowOpacity];
     _shadowRadius = [super shadowRadius];
+    
+    _layoutManagerClass = layoutManagerClass;
 
     // Disable user interaction for text node by default.
     self.userInteractionEnabled = NO;
@@ -343,7 +349,7 @@ static NSArray *DefaultLinkAttributeNames = @[ NSLinkAttributeName ];
 - (ASTextKitRenderer *)_locked_rendererWithBounds:(CGRect)bounds
 {
   bounds = UIEdgeInsetsInsetRect(bounds, _textContainerInset);
-  return rendererForAttributes([self _locked_rendererAttributes], bounds.size);
+  return rendererForAttributes([self _locked_rendererAttributes], bounds.size, _layoutManagerClass);
 }
 
 - (ASTextKitAttributes)_locked_rendererAttributes

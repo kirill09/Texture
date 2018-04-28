@@ -51,6 +51,7 @@ static NSCharacterSet *_defaultAvoidTruncationCharacterSet()
 
 - (instancetype)initWithTextKitAttributes:(const ASTextKitAttributes &)attributes
                           constrainedSize:(const CGSize)constrainedSize
+                       layoutManagerClass:(Class)layoutManagerClass
 {
   if (self = [super init]) {
     _constrainedSize = constrainedSize;
@@ -70,7 +71,8 @@ static NSCharacterSet *_defaultAvoidTruncationCharacterSet()
                                                     lineBreakMode:attributes.lineBreakMode
                                              maximumNumberOfLines:attributes.maximumNumberOfLines
                                                    exclusionPaths:attributes.exclusionPaths
-                                                  constrainedSize:shadowConstrainedSize];
+                                                  constrainedSize:shadowConstrainedSize
+                                               layoutManagerClass:layoutManagerClass];
     
     NSCharacterSet *avoidTailTruncationSet = attributes.avoidTailTruncationSet ?: _defaultAvoidTruncationCharacterSet();
     _truncater = [[ASTextKitTailTruncater alloc] initWithContext:[self context]
