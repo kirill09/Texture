@@ -200,7 +200,7 @@
 		9C70F20A1CDBE949007D6C76 /* ASTableNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9CFFC6C11CCAC768006A6476 /* ASTableNode.mm */; };
 		9C70F20D1CDBE9CB007D6C76 /* ASDefaultPlayButton.h in Headers */ = {isa = PBXBuildFile; fileRef = AEB7B0181C5962EA00662EF4 /* ASDefaultPlayButton.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		9C70F20E1CDBE9E5007D6C76 /* NSArray+Diffing.h in Headers */ = {isa = PBXBuildFile; fileRef = DBC452D91C5BF64600B16017 /* NSArray+Diffing.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9C70F20F1CDBE9FF007D6C76 /* ASLayoutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B30BF6501C5964B0004FCD53 /* ASLayoutManager.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		9C70F20F1CDBE9FF007D6C76 /* ASLayoutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B30BF6501C5964B0004FCD53 /* ASLayoutManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9C8898BC1C738BA800D6B02E /* ASTextKitFontSizeAdjuster.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C8898BA1C738B9800D6B02E /* ASTextKitFontSizeAdjuster.mm */; };
 		9C8898BD1C738BB800D6B02E /* ASTextKitFontSizeAdjuster.h in Headers */ = {isa = PBXBuildFile; fileRef = A32FEDD31C501B6A004F642A /* ASTextKitFontSizeAdjuster.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		9CC606651D24DF9E006581A0 /* NSIndexSet+ASHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4981BB1D1C7F65004E13CC /* NSIndexSet+ASHelpers.m */; };
