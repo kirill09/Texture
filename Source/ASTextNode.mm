@@ -145,6 +145,7 @@ static ASTextKitRenderer *rendererForAttributes(ASTextKitAttributes attributes, 
   ASTextKitAttributes _rendererAttributes;
   UIColor *_backgroundColor;
   UIEdgeInsets _textContainerInsets;
+  Class _layoutManagerClass;
 }
 @end
 
@@ -153,12 +154,14 @@ static ASTextKitRenderer *rendererForAttributes(ASTextKitAttributes attributes, 
 - (instancetype)initWithRendererAttributes:(ASTextKitAttributes)rendererAttributes
                            backgroundColor:(/*nullable*/ UIColor *)backgroundColor
                        textContainerInsets:(UIEdgeInsets)textContainerInsets
+                        layoutManagerClass:(Class)layoutManagerClass
 {
   self = [super init];
   if (self != nil) {
     _rendererAttributes = rendererAttributes;
     _backgroundColor = backgroundColor;
     _textContainerInsets = textContainerInsets;
+    _layoutManagerClass = layoutManagerClass;
   }
   return self;
 }
@@ -166,7 +169,7 @@ static ASTextKitRenderer *rendererForAttributes(ASTextKitAttributes attributes, 
 - (ASTextKitRenderer *)rendererForBounds:(CGRect)bounds
 {
   CGRect rect = UIEdgeInsetsInsetRect(bounds, _textContainerInsets);
-  return rendererForAttributes(_rendererAttributes, rect.size, [ASLayoutManager class]);
+  return rendererForAttributes(_rendererAttributes, rect.size, _layoutManagerClass);
 }
 
 @end
@@ -502,7 +505,8 @@ static NSArray *DefaultLinkAttributeNames = @[ NSLinkAttributeName ];
   
   return [[ASTextNodeDrawParameter alloc] initWithRendererAttributes:[self _locked_rendererAttributes]
                                                      backgroundColor:self.backgroundColor
-                                                 textContainerInsets:_textContainerInset];
+                                                 textContainerInsets:_textContainerInset
+                                                  layoutManagerClass:_layoutManagerClass];
 }
 
 + (void)drawRect:(CGRect)bounds withParameters:(id)parameters isCancelled:(asdisplaynode_iscancelled_block_t)isCancelledBlock isRasterizing:(BOOL)isRasterizing
